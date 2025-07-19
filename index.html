@@ -3,125 +3,372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Size Customizer</title>
+    <title>Image Size Customizer | Motion Suss</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
         }
+        
         .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+        
+        .container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
         h1 {
-            color: #333;
+            color: var(--secondary);
             text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+        
+        h2 {
+            color: var(--secondary);
+            margin: 1.5rem 0 1rem;
+            font-weight: 500;
+        }
+        
         .upload-area {
-            border: 2px dashed #ccc;
-            padding: 30px;
+            border: 2px dashed var(--gray);
+            padding: 3rem 2rem;
             text-align: center;
-            margin-bottom: 20px;
-            border-radius: 5px;
+            margin-bottom: 2rem;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.7);
+            position: relative;
+            overflow: hidden;
         }
+        
         .upload-area:hover {
-            border-color: #4CAF50;
-            background-color: #f9f9f9;
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+            transform: translateY(-2px);
         }
+        
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .upload-area:hover::before {
+            opacity: 1;
+        }
+        
+        .upload-area p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-area i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
         #imagePreview {
             max-width: 100%;
             max-height: 300px;
-            margin: 20px auto;
+            margin: 1.5rem auto;
             display: none;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
+        
+        #imagePreview:hover {
+            transform: scale(1.02);
+        }
+        
         .options {
-            margin: 20px 0;
+            margin: 2rem 0;
+            animation: fadeIn 0.5s ease forwards;
         }
+        
         .option-group {
-            margin-bottom: 15px;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(248, 249, 250, 0.5);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
         }
+        
+        .option-group:hover {
+            background: rgba(248, 249, 250, 0.9);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--secondary);
         }
-        input[type="radio"], input[type="range"], input[type="number"] {
-            margin-right: 10px;
+        
+        input[type="radio"] {
+            margin-right: 0.5rem;
+            accent-color: var(--primary);
         }
+        
+        .radio-label {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 1.5rem;
+            cursor: pointer;
+        }
+        
         button {
-            background-color: #4CAF50;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
             color: white;
             border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 10px 2px;
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0.5rem 0;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
+        
         button:hover {
-            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(67, 97, 238, 0.4);
         }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
         .download-btn {
             display: none;
-            background-color: #2196F3;
+            background: linear-gradient(to right, var(--accent), #f83a9d);
+            box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
         }
+        
         .download-btn:hover {
-            background-color: #0b7dda;
+            box-shadow: 0 7px 20px rgba(247, 37, 133, 0.4);
         }
+        
         .slider-container {
             display: flex;
             align-items: center;
+            margin-top: 0.5rem;
         }
+        
+        input[type="range"] {
+            flex-grow: 1;
+            height: 8px;
+            border-radius: 4px;
+            background: #dee2e6;
+            outline: none;
+            -webkit-appearance: none;
+            accent-color: var(--primary);
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+        
         .slider-container span {
-            margin-left: 10px;
-            min-width: 40px;
+            margin-left: 1rem;
+            min-width: 50px;
+            font-weight: 500;
+            color: var(--primary);
         }
+        
         .dimension-inputs {
             display: none;
-            margin-top: 10px;
+            margin-top: 1rem;
+            animation: fadeIn 0.5s ease;
         }
+        
         .dimension-group {
             display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
         }
+        
+        .dimension-input {
+            display: flex;
+            flex-direction: column;
+        }
+        
         .dimension-inputs input {
-            width: 80px;
-            padding: 5px;
+            width: 100px;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-family: inherit;
+            transition: all 0.3s ease;
         }
+        
+        .dimension-inputs input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+        
         .original-size {
             font-style: italic;
-            color: #666;
+            color: var(--gray);
+            font-size: 0.9rem;
         }
+        
         .format-options {
-            margin-top: 15px;
-            padding: 10px;
-            border-top: 1px solid #eee;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
+        
         .format-option {
-            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        
+        .file-info {
+            background: rgba(73, 80, 87, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .bounce {
+            animation: bounce 0.5s;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .dimension-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Image Size Customizer -Motion Suss</h1>
+        <h1>Image Size Customizer <span style="color: var(--accent);">Motion Suss</span></h1>
         
         <div class="upload-area" id="uploadArea">
+            <i>📁</i>
             <p>Drag & drop your image here or click to browse</p>
             <input type="file" id="fileInput" accept="image/*" style="display: none;">
             <img id="imagePreview" alt="Preview">
+        </div>
+        
+        <div class="file-info" id="fileInfo">
+            <p>Original size: <span id="originalFileSize">-</span></p>
+            <p>Type: <span id="fileType">-</span></p>
         </div>
         
         <div class="options" id="options" style="display: none;">
@@ -129,10 +376,16 @@
             
             <div class="option-group">
                 <label>Choose customization method:</label>
-                <input type="radio" id="sizeOption" name="customMethod" value="size" checked>
-                <label for="sizeOption" style="display: inline;">By File Size (Quality)</label><br>
-                <input type="radio" id="dimensionOption" name="customMethod" value="dimension">
-                <label for="dimensionOption" style="display: inline;">By Dimensions (Width/Height)</label>
+                <div style="margin-top: 0.5rem;">
+                    <label class="radio-label">
+                        <input type="radio" id="sizeOption" name="customMethod" value="size" checked>
+                        By File Size (Quality)
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" id="dimensionOption" name="customMethod" value="dimension">
+                        By Dimensions (Width/Height)
+                    </label>
+                </div>
             </div>
             
             <div id="sizeOptions">
@@ -142,41 +395,51 @@
                         <input type="range" id="qualitySlider" min="10" max="100" value="80">
                         <span id="qualityValue">80%</span>
                     </div>
+                    <p style="margin-top: 0.5rem;">Estimated file size: <strong><span id="estimatedSize">-</span></strong></p>
                 </div>
-                <p>Estimated file size: <span id="estimatedSize">-</span></p>
             </div>
             
             <div id="dimensionOptions" class="dimension-inputs">
                 <div class="option-group">
                     <label>Set Dimensions:</label>
-                    <div class="dimension-group">
-                        <div>
-                            <label for="widthInput">Width (px):</label>
-                            <input type="number" id="widthInput" min="10">
+                    <div class="dimension-input">
+                        <div class="dimension-group">
+                            <div>
+                                <label for="widthInput">Width (px):</label>
+                                <input type="number" id="widthInput" min="10" class="dimension-input">
+                            </div>
+                            <div>
+                                <label for="heightInput">Height (px):</label>
+                                <input type="number" id="heightInput" min="10" class="dimension-input">
+                            </div>
                         </div>
-                        <div>
-                            <label for="heightInput">Height (px):</label>
-                            <input type="number" id="heightInput" min="10">
+                        <div style="margin-top: 0.5rem;">
+                            <label class="radio-label">
+                                <input type="checkbox" id="maintainRatio" checked>
+                                Maintain aspect ratio
+                            </label>
                         </div>
+                        <p class="original-size">Original dimensions: <span id="originalDimensions">-</span></p>
                     </div>
-                    <div class="dimension-group">
-                        <input type="checkbox" id="maintainRatio" checked>
-                        <label for="maintainRatio" style="display: inline;">Maintain aspect ratio</label>
-                    </div>
-                    <p class="original-size">Original dimensions: <span id="originalDimensions">-</span></p>
                 </div>
             </div>
             
             <div class="format-options">
-                <label>Output Format:</label>
-                <input type="radio" id="formatJpeg" name="imageFormat" value="jpeg" checked class="format-option">
-                <label for="formatJpeg" style="display: inline;">JPEG</label>
-                <input type="radio" id="formatPng" name="imageFormat" value="png" class="format-option">
-                <label for="formatPng" style="display: inline;">PNG</label>
+                <label style="margin-right: 0.5rem;">Output Format:</label>
+                <div class="format-option">
+                    <input type="radio" id="formatJpeg" name="imageFormat" value="jpeg" checked>
+                    <label for="formatJpeg" style="display: inline; margin-left: 0.3rem;">JPEG</label>
+                </div>
+                <div class="format-option">
+                    <input type="radio" id="formatPng" name="imageFormat" value="png">
+                    <label for="formatPng" style="display: inline; margin-left: 0.3rem;">PNG</label>
+                </div>
             </div>
             
-            <button id="processBtn">Process Image</button>
-            <a id="downloadBtn" class="download-btn" download="customized-image">Download Image</a>
+            <div class="btn-group">
+                <button id="processBtn">Process Image <span class="spinner" id="processSpinner"></span></button>
+                <a id="downloadBtn" class="download-btn" download="customized-image">Download Image</a>
+            </div>
         </div>
     </div>
 
@@ -201,6 +464,10 @@
         const dimensionOption = document.getElementById('dimensionOption');
         const formatJpeg = document.getElementById('formatJpeg');
         const formatPng = document.getElementById('formatPng');
+        const fileInfo = document.getElementById('fileInfo');
+        const originalFileSizeEl = document.getElementById('originalFileSize');
+        const fileTypeEl = document.getElementById('fileType');
+        const processSpinner = document.getElementById('processSpinner');
         
         // Variables
         let originalImage = null;
@@ -211,21 +478,27 @@
         
         // Event listeners
         uploadArea.addEventListener('click', () => fileInput.click());
+        
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
-            uploadArea.style.borderColor = '#4CAF50';
+            uploadArea.style.borderColor = 'var(--primary)';
+            uploadArea.classList.add('bounce');
+            setTimeout(() => uploadArea.classList.remove('bounce'), 500);
         });
+        
         uploadArea.addEventListener('dragleave', () => {
-            uploadArea.style.borderColor = '#ccc';
+            uploadArea.style.borderColor = 'var(--gray)';
         });
+        
         uploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
-            uploadArea.style.borderColor = '#ccc';
+            uploadArea.style.borderColor = 'var(--gray)';
             if (e.dataTransfer.files.length) {
                 fileInput.files = e.dataTransfer.files;
                 handleFileSelect(e.dataTransfer.files[0]);
             }
         });
+        
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length) {
                 handleFileSelect(fileInput.files[0]);
@@ -248,13 +521,13 @@
         });
         
         widthInput.addEventListener('input', () => {
-            if (maintainRatio.checked) {
+            if (maintainRatio.checked && widthInput.value) {
                 heightInput.value = Math.round(widthInput.value / aspectRatio);
             }
         });
         
         heightInput.addEventListener('input', () => {
-            if (maintainRatio.checked) {
+            if (maintainRatio.checked && heightInput.value) {
                 widthInput.value = Math.round(heightInput.value * aspectRatio);
             }
         });
@@ -269,6 +542,10 @@
             }
             
             originalFileSize = file.size;
+            originalFileSizeEl.textContent = formatFileSize(originalFileSize);
+            fileTypeEl.textContent = file.type.split('/')[1].toUpperCase();
+            fileInfo.style.display = 'block';
+            
             estimatedSize.textContent = formatFileSize(originalFileSize);
             
             const reader = new FileReader();
@@ -310,44 +587,58 @@
         function processImage() {
             if (!originalImage) return;
             
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
+            // Show loading spinner
+            processSpinner.style.display = 'inline-block';
+            processBtn.disabled = true;
             
-            // Determine output format
-            const format = formatPng.checked ? 'png' : 'jpeg';
-            const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
-            
-            if (sizeOption.checked) {
-                // Process by quality
-                canvas.width = originalWidth;
-                canvas.height = originalHeight;
-                ctx.drawImage(originalImage, 0, 0);
+            setTimeout(() => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
                 
-                const quality = format === 'png' ? 1.0 : qualitySlider.value / 100;
-                const dataUrl = canvas.toDataURL(mimeType, quality);
-                downloadBtn.href = dataUrl;
-                downloadBtn.download = `customized-image.${format}`;
-            } else {
-                // Process by dimensions
-                const newWidth = parseInt(widthInput.value);
-                const newHeight = parseInt(heightInput.value);
+                // Determine output format
+                const format = formatPng.checked ? 'png' : 'jpeg';
+                const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
                 
-                if (isNaN(newWidth) || isNaN(newHeight) || newWidth <= 0 || newHeight <= 0) {
-                    alert('Please enter valid dimensions');
-                    return;
+                if (sizeOption.checked) {
+                    // Process by quality
+                    canvas.width = originalWidth;
+                    canvas.height = originalHeight;
+                    ctx.drawImage(originalImage, 0, 0);
+                    
+                    const quality = format === 'png' ? 1.0 : qualitySlider.value / 100;
+                    const dataUrl = canvas.toDataURL(mimeType, quality);
+                    downloadBtn.href = dataUrl;
+                    downloadBtn.download = `customized-image.${format}`;
+                } else {
+                    // Process by dimensions
+                    const newWidth = parseInt(widthInput.value);
+                    const newHeight = parseInt(heightInput.value);
+                    
+                    if (isNaN(newWidth) || isNaN(newHeight) || newWidth <= 0 || newHeight <= 0) {
+                        alert('Please enter valid dimensions');
+                        processSpinner.style.display = 'none';
+                        processBtn.disabled = false;
+                        return;
+                    }
+                    
+                    canvas.width = newWidth;
+                    canvas.height = newHeight;
+                    ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+                    
+                    const quality = format === 'png' ? 1.0 : 0.8;
+                    const dataUrl = canvas.toDataURL(mimeType, quality);
+                    downloadBtn.href = dataUrl;
+                    downloadBtn.download = `customized-image.${format}`;
                 }
                 
-                canvas.width = newWidth;
-                canvas.height = newHeight;
-                ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+                downloadBtn.style.display = 'inline-block';
+                processSpinner.style.display = 'none';
+                processBtn.disabled = false;
                 
-                const quality = format === 'png' ? 1.0 : 0.8;
-                const dataUrl = canvas.toDataURL(mimeType, quality);
-                downloadBtn.href = dataUrl;
-                downloadBtn.download = `customized-image.${format}`;
-            }
-            
-            downloadBtn.style.display = 'inline-block';
+                // Add bounce effect to download button
+                downloadBtn.classList.add('bounce');
+                setTimeout(() => downloadBtn.classList.remove('bounce'), 500);
+            }, 500); // Simulate processing delay
         }
     </script>
 </body>
